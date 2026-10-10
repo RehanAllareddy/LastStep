@@ -29,7 +29,7 @@ export async function signUpAction(input: unknown): Promise<ActionResult<{ email
     return fail(userMessage(error), "rate_limited");
   }
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: v.email,
     password: v.password,
     options: {
@@ -59,6 +59,10 @@ export async function signUpAction(input: unknown): Promise<ActionResult<{ email
     // Never reveal whether an email is already registered.
     if (error.code !== "user_already_exists") return fail("We couldn't create your account. Please try again.");
   }
+  // When the project doesn't require email confirmation, a new account is signed in
+  // immediately: go straight to onboarding instead of saying "check your email".
+  // (Existing emails never get a session, so this reveals nothing about them.)
+  if (data?.session) redirect("/onboarding");
   return { ok: true, data: { email: v.email } };
 }
 
