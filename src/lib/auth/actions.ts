@@ -47,6 +47,15 @@ export async function signUpAction(input: unknown): Promise<ActionResult<{ email
     if (error.code === "weak_password")
       return fail("Choose a stronger password.", "weak_password", { password: "Choose a stronger password" });
     if (error.status === 429) return fail("Too many attempts. Please wait and try again.", "rate_limited");
+    // The auth server rolls the account back when the confirmation email can't be sent
+    // (misconfigured SMTP or an unverified sender). Surface that instead of "try again".
+    if (/sending confirmation email/i.test(error.message)) {
+      console.error("[auth] confirmation email could not be sent; check SMTP settings");
+      return fail(
+        "We couldn't send your confirmation email right now, so your account wasn't created. Please try again later.",
+        "email_delivery_failed",
+      );
+    }
     // Never reveal whether an email is already registered.
     if (error.code !== "user_already_exists") return fail("We couldn't create your account. Please try again.");
   }
