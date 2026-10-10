@@ -1,0 +1,18 @@
+# OPTIONAL fallback scheduler for deployments that do not use Inngest.
+# Inngest is the recommended production scheduler (see README). If you enable
+# this, set repository secrets LASTSTEP_URL and CRON_SECRET, and note that
+# GitHub's cron can be delayed by several minutes under load.
+name: scheduler-fallback
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "*/5 * * * *"
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS -X POST "$LASTSTEP_URL/api/internal/dispatch" -H "Authorization: Bearer $CRON_SECRET"
+        env:
+          LASTSTEP_URL: ${{ secrets.LASTSTEP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}

@@ -1,0 +1,5 @@
+-- Intentionally empty: LastStep ships no fake users, assignments or analytics.
+-- Reference data (state-machine transitions, default reminder limits) lives in
+-- the migrations so it exists in every environment, including production.
+-- Create local accounts through the app (emails arrive in Mailpit at
+-- http://127.0.0.1:54324) and grant operations roles with `npm run admin:grant`.

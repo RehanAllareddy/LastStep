@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * LastStep design tokens. Components reference semantic tokens only, so the
+ * light and dark themes stay in sync.
+ */
+:root {
+  --background: #f8f8fa;
+  --surface: #ffffff;
+  --surface-muted: #f2f2f5;
+  --foreground: #15151c;
+  --muted-foreground: #5d5d6b;
+  --subtle-foreground: #8a8a98;
+  --border: #e4e4ea;
+  --border-strong: #d0d0d9;
+  --ring: #3d4bf5;
+
+  --accent: #3d4bf5;
+  --accent-hover: #2f3ce0;
+  --accent-foreground: #ffffff;
+  --accent-soft: #eef0ff;
+  --accent-soft-foreground: #2a36c4;
+
+  --success: #13804a;
+  --success-soft: #e8f6ee;
+  --warning: #a35a00;
+  --warning-soft: #fff4e0;
+  --danger: #c8283b;
+  --danger-hover: #ad1f31;
+  --danger-soft: #fdecee;
+  --info: #3d4bf5;
+  --info-soft: #eef0ff;
+
+  --shadow-color: 230 20% 20%;
+  --radius: 14px;
+}
+
+.dark {
+  --background: #0c0c11;
+  --surface: #14141b;
+  --surface-muted: #1b1b24;
+  --foreground: #ececf2;
+  --muted-foreground: #a2a2b2;
+  --subtle-foreground: #75758a;
+  --border: #272733;
+  --border-strong: #363644;
+  --ring: #8790ff;
+
+  --accent: #6f7bff;
+  --accent-hover: #8790ff;
+  --accent-foreground: #0c0c11;
+  --accent-soft: #1d2040;
+  --accent-soft-foreground: #b5bbff;
+
+  --success: #4cc68a;
+  --success-soft: #11291d;
+  --warning: #f0b25a;
+  --warning-soft: #2c2010;
+  --danger: #f27080;
+  --danger-hover: #f58a97;
+  --danger-soft: #2f141a;
+  --info: #8790ff;
+  --info-soft: #1d2040;
+
+  --shadow-color: 240 30% 2%;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-foreground: var(--accent-soft-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-card: 0 1px 2px hsl(var(--shadow-color) / 0.04), 0 1px 1px hsl(var(--shadow-color) / 0.03);
+  --shadow-raised: 0 1px 2px hsl(var(--shadow-color) / 0.05), 0 8px 24px -8px hsl(var(--shadow-color) / 0.12);
+  --shadow-overlay: 0 24px 64px -16px hsl(var(--shadow-color) / 0.3);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--accent-soft-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-fade-in {
+  animation: fade-in 180ms ease-out both;
+}
